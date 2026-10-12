@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #f3f4f6;
+      font-family: Arial, sans-serif;
+      color: #111827;
+    }
+
+    .settings-card {
+      width: 100%;
+      max-width: 420px;
+      padding: clamp(20px, 5vw, 30px);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.6rem;
+    }
+
+    .subtitle {
+      margin: 0 0 25px;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .form-group input {
+      display: block;
+      width: 100%;
+      min-height: 44px;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font: inherit;
+      font-size: 16px;
+      background: #fff;
+    }
+
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #818cf8;
+      outline-offset: 3px;
+    }
+
+    .form-group input[aria-invalid="true"] {
+      border-color: #b91c1c;
+    }
+
+    .error {
+      margin: 6px 0 0;
+      color: #b91c1c;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .notification {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 25px;
+      color: #374151;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .notification input {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin: 2px 0 0;
+      accent-color: #4f46e5;
+    }
+
+    .notification small {
+      display: block;
+      margin-top: 5px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      min-height: 46px;
+      padding: 13px;
+      border: 0;
+      border-radius: 7px;
+      background: #4f46e5;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    .message {
+      margin: 15px 0 0;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.success {
+      color: #15803d;
+    }
+
+    .message.failure {
+      color: #b91c1c;
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 12px;
+      }
+
+      .settings-card {
+        border-radius: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+
+  <script type="module" src="./settings.js"></script>
+</head>
+
+<body>
+  <main class="settings-card">
+    <h1>Settings</h1>
+    <p class="subtitle">Manage your account preferences.</p>
+
+    <form id="settingsForm" novalidate>
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your name"
+          autocomplete="name"
+          required
+          aria-describedby="nameError"
+        />
+        <p id="nameError" class="error" hidden></p>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+          aria-describedby="emailError"
+        />
+        <p id="emailError" class="error" hidden></p>
+      </div>
+
+      <label class="notification" for="notifications">
+        <input
+          type="checkbox"
+          id="notifications"
+          name="notifications"
+          checked
+        />
+        <span>
+          <strong>Email Notifications</strong>
+          <small>Receive updates and important news.</small>
+        </span>
+      </label>
+
+      <button type="submit">Save Changes</button>
+
+      <p
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
+    </form>
+  </main>
+</body>
+</html>
