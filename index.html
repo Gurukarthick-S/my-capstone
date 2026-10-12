@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings Form</title>
 
   <style>
@@ -151,14 +151,6 @@
         border-radius: 10px;
       }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-      }
-    }
   </style>
 
   <script type="module" src="./settings.js"></script>
@@ -180,7 +172,7 @@
           autocomplete="name"
           required
           aria-describedby="nameError"
-        />
+        >
         <p id="nameError" class="error" hidden></p>
       </div>
 
@@ -194,7 +186,7 @@
           autocomplete="email"
           required
           aria-describedby="emailError"
-        />
+        >
         <p id="emailError" class="error" hidden></p>
       </div>
 
@@ -204,7 +196,7 @@
           id="notifications"
           name="notifications"
           checked
-        />
+        >
         <span>
           <strong>Email Notifications</strong>
           <small>Receive updates and important news.</small>
