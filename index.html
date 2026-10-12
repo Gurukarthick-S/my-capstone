@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings Form</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .settings-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-bottom: 25px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px #4f46e51a;
+    }
+
+    .notification {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 25px;
+      font-size: 14px;
+      color: #374151;
+      cursor: pointer;
+    }
+
+    .notification input {
+      margin-top: 3px;
+      accent-color: #4f46e5;
+    }
+
+    .notification small {
+      display: block;
+      margin-top: 5px;
+      color: #6b7280;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 7px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4338ca;
+    }
+
+    #message {
+      margin: 15px 0 0;
+      text-align: center;
+      font-size: 14px;
+      color: #15803d;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="settings-card">
+    <h2>Settings</h2>
+    <p class="subtitle">Manage your account preferences.</p>
+
+    <form id="settingsForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+          required
+        />
+      </div>
+
+      <label class="notification">
+        <input type="checkbox" id="notifications" checked />
+        <span>
+          <strong>Email Notifications</strong>
+          <small>Receive updates and important news.</small>
+        </span>
+      </label>
+
+      <button type="submit">Save Changes</button>
+
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("settingsForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const notifications =
+        document.getElementById("notifications").checked;
+
+      const settings = {
+        name: name,
+        email: email,
+        notifications: notifications
+      };
+
+      // Save settings in this browser.
+      localStorage.setItem("userSettings", JSON.stringify(settings));
+
+      message.textContent = "Settings saved successfully!";
+      console.log("Saved settings:", settings);
+    });
+
+    // Load previously saved settings.
+    window.addEventListener("DOMContentLoaded", function () {
+      const saved = localStorage.getItem("userSettings");
+
+      if (saved) {
+        const settings = JSON.parse(saved);
+
+        document.getElementById("name").value = settings.name || "";
+        document.getElementById("email").value = settings.email || "";
+        document.getElementById("notifications").checked =
+          settings.notifications ?? true;
+      }
+    });
+  </script>
+</body>
+</html>
