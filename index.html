@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings Form</title>
 
   <style>
@@ -17,29 +17,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
       background: #f3f4f6;
       font-family: Arial, sans-serif;
-      padding: 20px;
+      color: #111827;
     }
 
     .settings-card {
       width: 100%;
       max-width: 420px;
-      padding: 30px;
-      background: white;
+      padding: clamp(20px, 5vw, 30px);
+      background: #fff;
       border-radius: 14px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     }
 
-    h2 {
+    h1 {
       margin: 0 0 8px;
-      color: #111827;
+      font-size: 1.6rem;
     }
 
     .subtitle {
-      margin-bottom: 25px;
+      margin: 0 0 25px;
       color: #6b7280;
       font-size: 14px;
+      line-height: 1.5;
     }
 
     .form-group {
@@ -50,22 +52,37 @@
       display: block;
       margin-bottom: 8px;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 700;
       color: #374151;
     }
 
     .form-group input {
+      display: block;
       width: 100%;
+      min-height: 44px;
       padding: 12px;
       border: 1px solid #d1d5db;
       border-radius: 7px;
-      font-size: 14px;
-      outline: none;
+      font: inherit;
+      font-size: 16px;
+      background: #fff;
     }
 
-    .form-group input:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px #4f46e51a;
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #818cf8;
+      outline-offset: 3px;
+    }
+
+    .form-group input[aria-invalid="true"] {
+      border-color: #b91c1c;
+    }
+
+    .error {
+      margin: 6px 0 0;
+      color: #b91c1c;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     .notification {
@@ -73,13 +90,16 @@
       align-items: flex-start;
       gap: 10px;
       margin-bottom: 25px;
-      font-size: 14px;
       color: #374151;
+      font-size: 14px;
       cursor: pointer;
     }
 
     .notification input {
-      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin: 2px 0 0;
       accent-color: #4f46e5;
     }
 
@@ -87,17 +107,19 @@
       display: block;
       margin-top: 5px;
       color: #6b7280;
+      line-height: 1.5;
     }
 
     button {
       width: 100%;
+      min-height: 46px;
       padding: 13px;
-      background: #4f46e5;
-      color: white;
-      border: none;
+      border: 0;
       border-radius: 7px;
-      font-size: 15px;
-      font-weight: bold;
+      background: #4f46e5;
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
       cursor: pointer;
     }
 
@@ -105,29 +127,53 @@
       background: #4338ca;
     }
 
-    #message {
+    .message {
       margin: 15px 0 0;
-      text-align: center;
       font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.success {
       color: #15803d;
     }
+
+    .message.failure {
+      color: #b91c1c;
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 12px;
+      }
+
+      .settings-card {
+        border-radius: 10px;
+      }
+    }
   </style>
+
+  <script type="module" src="./settings.js"></script>
 </head>
 
 <body>
-  <div class="settings-card">
-    <h2>Settings</h2>
+  <main class="settings-card">
+    <h1>Settings</h1>
     <p class="subtitle">Manage your account preferences.</p>
 
-    <form id="settingsForm">
+    <form id="settingsForm" novalidate>
       <div class="form-group">
         <label for="name">Full Name</label>
         <input
           type="text"
           id="name"
+          name="name"
           placeholder="Enter your name"
+          autocomplete="name"
           required
-        />
+          aria-describedby="nameError"
+        >
+        <p id="nameError" class="error" hidden></p>
       </div>
 
       <div class="form-group">
@@ -135,13 +181,22 @@
         <input
           type="email"
           id="email"
+          name="email"
           placeholder="you@example.com"
+          autocomplete="email"
           required
-        />
+          aria-describedby="emailError"
+        >
+        <p id="emailError" class="error" hidden></p>
       </div>
 
-      <label class="notification">
-        <input type="checkbox" id="notifications" checked />
+      <label class="notification" for="notifications">
+        <input
+          type="checkbox"
+          id="notifications"
+          name="notifications"
+          checked
+        >
         <span>
           <strong>Email Notifications</strong>
           <small>Receive updates and important news.</small>
@@ -150,48 +205,14 @@
 
       <button type="submit">Save Changes</button>
 
-      <p id="message" role="status" aria-live="polite"></p>
+      <p
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></p>
     </form>
-  </div>
-
-  <script>
-    const form = document.getElementById("settingsForm");
-    const message = document.getElementById("message");
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const notifications =
-        document.getElementById("notifications").checked;
-
-      const settings = {
-        name: name,
-        email: email,
-        notifications: notifications
-      };
-
-      // Save settings in this browser.
-      localStorage.setItem("userSettings", JSON.stringify(settings));
-
-      message.textContent = "Settings saved successfully!";
-      console.log("Saved settings:", settings);
-    });
-
-    // Load previously saved settings.
-    window.addEventListener("DOMContentLoaded", function () {
-      const saved = localStorage.getItem("userSettings");
-
-      if (saved) {
-        const settings = JSON.parse(saved);
-
-        document.getElementById("name").value = settings.name || "";
-        document.getElementById("email").value = settings.email || "";
-        document.getElementById("notifications").checked =
-          settings.notifications ?? true;
-      }
-    });
-  </script>
+  </main>
 </body>
 </html>

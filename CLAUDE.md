@@ -84,3 +84,10 @@ Before implementing a significant feature:
 3. Reuse existing components and utilities where possible.
 4. Avoid introducing unnecessary dependencies.
 5. Do not invent requirements that were not provided.
+
+
+## Project-Specific Rules
+
+1. **Validation:** Validate all required form fields and email formats before saving user input. Show clear error messages beside invalid fields.
+2. **Accessibility:** Every form input must have a connected label. Use visible keyboard focus indicators and accessible status messages.
+3. **Responsive design:** Make all pages work on mobile and desktop screens. Use flexible widths and avoid horizontal scrolling.
